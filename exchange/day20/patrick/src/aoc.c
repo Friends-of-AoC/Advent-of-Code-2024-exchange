@@ -31,6 +31,8 @@ int part = 2;
 FILE *solution_out;
 #ifdef INTERACTIVE
 int interactive = 0;
+#else
+#define interactive 0
 #endif
 
 #define starts_with(str, start) !memcmp(str, start, sizeof(start) - 1)
@@ -52,20 +54,46 @@ struct data {
 
 static int do_print = 0;
 
-static void print(FILE *str, struct data *data, uint64_t result) {
+static void print(FILE *str, struct data *data, uint64_t result,
+		struct hashset *used_cheats, num lastx, num lasty) {
 	if (result) {
 		fprintf(str, "%sresult=%"I64"u\n%s", STEP_HEADER, result, STEP_BODY);
 	} else {
 		fputs(STEP_BODY, str);
 	}
-	if (!do_print) {
-		fputs(STEP_FINISHED, str);
+	if (!do_print && !interactive) {
 		return;
 	}
-	for (num l = 0; l < data->line_count; ++l) {
-		fprintf(str, "%s\n", data->lines[l]);
+	struct pos p;
+	for (p.y = 0; p.y < data->line_count; ++p.y) {
+		char last = 0, *line = data->lines[p.y];
+		for (p.x = 0; p.x < data->line_length; ++p.x) {
+			if (p.y == lasty && p.x == lastx) {
+				fputs(CSI C_DEF_INTENSE C_SEP //
+						C_FC_PREFIX C_CYAN C_END "#", str);
+				last = 0;
+				continue;
+			}
+			char c = line[p.x];
+			if (hs_get(used_cheats, &p)) {
+				fprintf(str, CSI C_DEF_INTENSE C_SEP //
+						C_FC_PREFIX C_RED C_END "%c", c);
+				last = 0;
+				continue;
+			}
+			if (c == last) {
+				fputc(c, str);
+			} else if (c == '#') {
+				fprintf(str, CSI C_LESS_INTENSE C_SEP //
+						C_FC_PREFIX C_RGB_GRAY C_END "%c", c);
+			} else {
+				fprintf(str, CSI C_DEF_INTENSE C_SEP C_FC_DEF C_END "%c", c);
+			}
+			last = c;
+		}
+		fputc('\n', str);
 	}
-	fputs(STEP_FINISHED, str);
+	fputs(interactive ? STEP_FINISHED : RESET, str);
 }
 
 static void find_free_pos(struct data *data, struct pos *p, int set_dir) {
@@ -148,13 +176,25 @@ static num calc_turns(struct data *data, num startx, num starty) {
 	}
 }
 
+const num min_saved = 1;
+
 static num cheat(struct data *data, num cheat_turns, num srcx, num srcy,
-		num dstx, num dsty) {
+		num dstx, num dsty, struct hashset *used_cheats) {
 	char old = data->lines[dsty][dstx];
 	data->lines[dsty][dstx] = 'E';
 	uint64_t saved = calc_turns(data, srcx, srcy) - cheat_turns;
 	data->lines[dsty][dstx] = old;
-	printf("saved %"I64"u turns\n", saved);
+	if (!interactive) {
+		printf("saved %"I64"u turns\n", saved);
+	} else if (saved >= min_saved) {
+		struct pos *p = malloc(sizeof(struct pos));
+		p->x = dstx;
+		p->y = dsty;
+		if (hs_set(used_cheats, p)) {
+			fprintf(stderr, "same cheat used multiple times!\n");
+			exit(4);
+		}
+	}
 	return saved;
 }
 
@@ -167,10 +207,9 @@ static int p_eq(const void *a, const void *b) {
 	return p0->x == p1->x && p0->y == p1->y;
 }
 
-const num min_saved = 100;
-
 static void recursive_cheat(struct data *data, struct hashset *cheats,
-		num startx, num starty, num x, num y, uint64_t *counter) {
+		num startx, num starty, num x, num y, uint64_t *counter,
+		struct hashset *used_cheats) {
 	if (x < 0 || y < 0 || x >= data->line_length || y >= data->line_count) {
 		return;
 	}
@@ -184,13 +223,18 @@ static void recursive_cheat(struct data *data, struct hashset *cheats,
 	turns += startx > x ? startx - x : x - startx;
 	turns += starty > y ? starty - y : y - starty;
 	if (turns < 20) {
-		recursive_cheat(data, cheats, startx, starty, x + 1, y, counter);
-		recursive_cheat(data, cheats, startx, starty, x - 1, y, counter);
-		recursive_cheat(data, cheats, startx, starty, x, y + 1, counter);
-		recursive_cheat(data, cheats, startx, starty, x, y - 1, counter);
+		recursive_cheat(data, cheats, startx, starty, x + 1, y, counter,
+				used_cheats);
+		recursive_cheat(data, cheats, startx, starty, x - 1, y, counter,
+				used_cheats);
+		recursive_cheat(data, cheats, startx, starty, x, y + 1, counter,
+				used_cheats);
+		recursive_cheat(data, cheats, startx, starty, x, y - 1, counter,
+				used_cheats);
 	}
 	if (data->lines[y][x] != '#') {
-		if (cheat(data, turns, startx, starty, x, y) >= min_saved) {
+		if (cheat(data, turns, startx, starty, x, y, used_cheats)
+				>= min_saved) {
 			++*counter;
 		}
 	}
@@ -203,45 +247,58 @@ const char* solve(const char *path) {
 		exit(2);
 	}
 	uint64_t result = 0;
-	print(solution_out, data, result);
+	struct hashset cheats = { .hash = p_h, .equal = p_eq, .free = free };
+	struct hashset used_cheats = { .hash = p_h, .equal = p_eq, .free = free };
+	print(solution_out, data, result, &used_cheats, -1, -1);
 	num x = data->start.x, y = data->start.y;
 	uint64_t turns = calc_turns(data, x, y);
 	int cont = 160;
-	struct hashset cheats = { .hash = p_h, .equal = p_eq, .free = free };
+	num lastx = -1, lasty = -1;
 	while (cont) {
-		print(solution_out, data, result);
+		print(solution_out, data, result, &used_cheats, lastx, lasty);
+		hs_clear(&used_cheats);
 		char c = data->lines[y][x];
 		if (part == 1) {
 			if (y >= 2 && data->lines[y - 2][x] != '#'
 					&& data->lines[y - 1][x] == '#'
-					&& cheat(data, 2, x, y, x, y - 2) >= min_saved) {
+					&& cheat(data, 2, x, y, x, y - 2, &used_cheats)
+							>= min_saved) {
 				result++;
 			}
 			if (y + 2 < data->line_count && data->lines[y + 2][x] != '#'
 					&& data->lines[y + 1][x] == '#'
-					&& cheat(data, 2, x, y, x, y + 2) >= min_saved) {
+					&& cheat(data, 2, x, y, x, y + 2, &used_cheats)
+							>= min_saved) {
 				result++;
 			}
 			if (x >= 2 && data->lines[y][x - 2] != '#'
 					&& data->lines[y][x - 1] == '#'
-					&& cheat(data, 2, x, y, x - 2, y) >= min_saved) {
+					&& cheat(data, 2, x, y, x - 2, y, &used_cheats)
+							>= min_saved) {
 				result++;
 			}
 			if (x + 2 < data->line_length && data->lines[y][x + 2] != '#'
 					&& data->lines[y][x + 1] == '#'
-					&& cheat(data, 2, x, y, x + 2, y) >= min_saved) {
+					&& cheat(data, 2, x, y, x + 2, y, &used_cheats)
+							>= min_saved) {
 				result++;
 			}
 		} else {
 			struct pos *p = malloc(sizeof(struct pos));
 			hs_set(&cheats, p);
-			recursive_cheat(data, &cheats, x, y, x + 1, y, &result);
-			recursive_cheat(data, &cheats, x, y, x - 1, y, &result);
-			recursive_cheat(data, &cheats, x, y, x, y + 1, &result);
-			recursive_cheat(data, &cheats, x, y, x, y - 1, &result);
+			recursive_cheat(data, &cheats, x, y, x + 1, y, &result,
+					&used_cheats);
+			recursive_cheat(data, &cheats, x, y, x - 1, y, &result,
+					&used_cheats);
+			recursive_cheat(data, &cheats, x, y, x, y + 1, &result,
+					&used_cheats);
+			recursive_cheat(data, &cheats, x, y, x, y - 1, &result,
+					&used_cheats);
 			hs_clear(&cheats);
 		}
 		data->lines[y][x] = '#';
+		lastx = x;
+		lasty = y;
 		switch (c) {
 		case '>':
 			++x;
@@ -262,7 +319,8 @@ const char* solve(const char *path) {
 			fprintf(stderr, "invalid char %c\n", data->lines[y][x]);
 		}
 	}
-	print(solution_out, data, result);
+	print(solution_out, data, result, &used_cheats, lastx, lasty);
+	hs_clear(&used_cheats);
 	for (num l = 0; l < data->line_count; ++l) {
 		free(data->lines[l]);
 	}

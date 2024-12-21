@@ -206,8 +206,8 @@ static void show() {
 				"day %d part %d on file %s (world %ld%s)\n"
 				"world: min: (%ld, %ld), max: (%ld, %ld)\n" //
 				"shown: min: (%ld, %ld), max: (%ld, %ld)\n",//
-				display_sizes.y - 1,
-				display_sizes.x, //
+				(unsigned) display_sizes.y - 1U,
+				(unsigned) display_sizes.x, //
 				day, part, puzzle_file, world_idx, add_str, /* line 1 */
 				min_pos.y, min_pos.x, max_pos.y, max_pos.x, /* line 2 */
 				cur.y, cur.x,
@@ -367,7 +367,7 @@ static uint64_t act_h(const void *a) {
 	return result;
 }
 static struct hashset actions = { .equal = act_eq, .hash = act_h };
-static struct hashset commands = { .equal = act_eq, .hash = act_h };
+//static struct hashset commands = { .equal = act_eq, .hash = act_h };
 static void unknown(const char *cmd);
 static void act_incomplete() {
 	abort();
@@ -796,7 +796,7 @@ static int update_display_size(int allow_fail) {
 			}
 			if (display_sizes.y > nl) {
 				dprintf(out, FRMT_CURSOR_UP_START ERASE_END_OF_DISPLAY,
-						display_sizes.y - nl);
+						(unsigned) (display_sizes.y - nl));
 			} else if (display_sizes.y < nl) {
 				size_t diff = nl - display_sizes.y;
 				size_t cd = diff > 128 ? 128 : diff;
