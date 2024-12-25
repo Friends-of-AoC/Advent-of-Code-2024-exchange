@@ -1,0 +1,30 @@
+find(25,z25)=1: C25=pmm x25 y25
+z25 < C25=pmm < fws < _24
+                  AND C24
+            OR qcb < x24
+                     AND y24
+      XOR _25=msc < x25
+                XOR y25
+
+
+find(26,z26)=0: (null) (null) (null)
+z26 < x26
+      AND y26
+
+
+find(27,z27)=1: y27 cmf x27
+z27 < swt < y27
+            XOR x27
+      XOR cmf < gsd < _26=dfp < y26
+                                XOR x26
+                      XOR C26=mbg < qmv < x25
+                                          AND y25
+                                    OR ftq < C25
+                                             AND _25
+                OR kbg < C26=mbg < qmv < x25
+                                         AND y25
+                                   OR ftq < C25
+                                            AND _25
+                         AND _26=dfp < y26
+                                       XOR x26
+SWAP: gsd <-> z26

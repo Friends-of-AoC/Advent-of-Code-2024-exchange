@@ -1,0 +1,42 @@
+z11 < C11=tnr < mjb < y10
+                      AND x10
+                OR knt < C10
+                         AND _10
+      XOR _11=kdw < y11
+                    XOR x11
+
+ORIG: z12
+z12 < 
+
+
+
+      psw < x12
+            AND y12
+      OR nng < nhb
+                   < y12
+                     XOR x12
+               AND cdq < fkw < C11
+                               AND _11
+                         OR mdq < x11
+                                  AND y11
+
+
+SWAP: kth <-> z12
+
+z12 < nhb < y12
+            XOR x12
+      XOR cdq < fkw < C11
+                      AND _11
+                OR mdq < x11
+                         AND y11
+
+
+find(13,z13)=0: _13=mtp nhb cdq
+z13 < _13=mtp < x13
+                XOR y13
+      XOR C13=kth < nhb < y12
+                          XOR x12
+                    XOR cdq < fkw < C11
+                                    AND _11
+                              OR mdq < x11
+                                       AND y11

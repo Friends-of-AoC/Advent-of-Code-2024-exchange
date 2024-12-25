@@ -1,0 +1,21 @@
+find(32,z32)=0: (null) (null) (null)
+z32 < vtg < nhq < x31
+                  AND y31
+            OR bjf < C31
+                     AND _31
+      AND bkh < x32
+                XOR y32
+
+find(33,z33)=1: nwm x33 y33
+z33 < nwm < tbt < vtg < nhq < x31
+                              AND y31
+                        OR bjf < C31
+                                 AND _31
+                  XOR bkh < x32
+                            XOR y32
+            OR skt < y32
+                     AND x32
+      XOR rpb < x33
+                XOR y33
+
+SWAP: tbt <-> z32

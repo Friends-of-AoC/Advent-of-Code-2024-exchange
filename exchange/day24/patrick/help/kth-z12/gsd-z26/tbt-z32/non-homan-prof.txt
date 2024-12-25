@@ -1,0 +1,37 @@
+find(36,z36)=0: C36=htb _36=qnf (null)
+z36 < C36=htb < bbb < _35
+                      AND C35
+                OR cnp < x35
+                         AND y35
+      XOR _36=qnf < y36
+                    AND x36
+
+find(37,z37)=1: x37 C37=wkk y37
+z37 < _37=hpp < x37
+                XOR y37
+      XOR C37=wkk < thg < C36
+                         AND _36
+                   OR vpm < y36
+                            XOR x36
+
+
+SWAP: qnf <-> vpm
+
+ALL-SWAPS:
+kth <-> z12
+gsd <-> z26
+tbt <-> z32
+qnf <-> vpm
+
+kth
+gsd
+tbt
+qnf
+z12
+z26
+z32
+vpm
+
+
+sorted:
+gsd,kth,qnf,tbt,vpm,z12,z26,z32

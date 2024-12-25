@@ -1,0 +1,250 @@
+find(0,z00)=1: x00 y00 (null)
+z00 < x00
+      XOR y00
+
+find(1,z01)=1: y01 C01=bdj x01
+z01 < _01=twd < y01
+                XOR x01
+      XOR C01=bdj < x00
+                    AND y00
+
+find(2,z02)=1: x02 C02=rhr y02
+z02 < _02=rsk < x02
+                XOR y02
+      XOR C02=rhr < cbq < _01=twd
+                          AND C01=bdj
+                    OR A02=gwd < y01
+                                 AND x01
+
+find(3,z03)=1: x03 C03=twj y03
+z03 < _03=jfr < x03
+            XOR y03
+      XOR C03=twj < fph < y02
+                          AND x02
+                    OR nkm < C02=rhr
+                             AND _02=rsk
+
+find(4,z04)=1: C04=dft y04 x04
+z04 < C04=dft < nbj < C03=twj
+                      AND _03=jfr
+                OR rnw < y03
+                         AND x03
+      XOR _04=vwf < y04
+                    XOR x04
+
+find(5,z05)=1: C05=str x05 y05
+z05 < C05=str < hwt < y04
+                      AND x04
+                OR mfj < _04=vwf
+                         AND C04=dft
+      XOR _05=gtt < x05
+                XOR y05
+
+find(6,z06)=1: C06=rjb y06 x06
+z06 < C06=rjb < vth < x05
+                  AND y05
+            OR jvv < C05=str
+                     AND _05=gtt
+      XOR _06=jrg < y06
+                    XOR x06
+
+find(7,z07)=1: x07 C07=mwg y07
+z07 < _07=wnd < x07
+                XOR y07
+      XOR C07=mwg < mjs < _06
+                          AND C06
+                    OR dbc < x06
+                             AND y06
+
+find(8,z08)=1: C08=whc y08 x08
+z08 < C08=whc < hnm < C07=mwg
+                      AND _07
+                OR vqk < x07
+                         AND y07
+      XOR _08=ndh < y08
+                    XOR x08
+
+find(9,z09)=1: C09=bpc x09 y09
+z09 < C09=bpc < rbb < _08
+                      AND C08
+                OR gth < y08
+                         AND x08
+      XOR _09=hsq < x09
+                    XOR y09
+
+find(10,z10)=1: y10 C10=kqs x10
+z10 < _10=fnm < y10
+                XOR x10
+      XOR C10=kqs < rjj < _09=hsq
+                          AND C09=bpc
+                    OR qsm < x09
+                             AND y09
+
+find(11,z11)=1: C11=tnr y11 x11
+z11 < C11=tnr < mjb < y10
+                      AND x10
+                OR knt < C10
+                         AND _10
+      XOR _11=kdw < y11
+                    XOR x11
+
+find(12,z12)=1: y12 C12=cdq x12
+z12 < _12=nhb < y12
+                XOR x12
+      XOR C12=cdq < fkw < C11
+                          AND _11
+                    OR mdq < x11
+                             AND y11
+
+find(13,z13)=1: x13 C13=kth y13
+z13 < _13=mtp < x13
+                XOR y13
+      XOR C13=kth < psw < x12
+                          AND y12
+                    OR nng < _12=nhb
+                             AND C12=cdq
+
+find(14,z14)=1: C14=rpt y14 x14
+z14 < C14=rpt < cns < _13
+                      AND C13
+                OR qrs < y13
+                         AND x13
+      XOR _14=hbh < y14
+                    XOR x14
+
+find(15,z15)=1: x15 C15=sqb y15
+z15 < _15=ckk < x15
+                XOR y15
+      XOR C15=sqb < ctc < _14
+                          AND C14
+                    OR skj < x14
+                             AND y14
+
+find(16,z16)=1: C16=msm x16 y16
+z16 < C16=msm < jhq < x15
+                      AND y15
+                OR dgn < _15
+                         AND C15
+      XOR _16=qdt < x16
+                    XOR y16
+
+find(17,z17)=1: x17 C17=qjv y17
+z17 < _17=pts < x17
+                XOR y17
+      XOR C17=qjv < hjd < y16
+                          AND x16
+                    OR bjj < C16
+                             AND _16
+
+find(18,z18)=1: C18=fhb x18 y18
+z18 < C18=fhb < tkm < y17
+                      AND x17
+                OR mmm < C17
+                         AND _17
+      XOR _18=pbj < x18
+                XOR y18
+
+find(19,z19)=1: C19=spq x19 y19
+z19 < C19=spq < pbd < y18
+                      AND x18
+                OR wfr < C18
+                         AND _18
+      XOR _19=jvg < x19
+                    XOR y19
+
+find(20,z20)=1: C20=crt x20 y20
+z20 < C20=crt < hgk < x19
+                      AND y19
+                OR gfv < C19
+                         AND _19
+      XOR _20=vhk < x20
+                    XOR y20
+
+find(21,z21)=1: y21 C21=gjg x21
+z21 < _21=nkr < y21
+                XOR x21
+      XOR C21=gjg < khd < x20
+                          AND y20
+                    OR qgh < _20
+                             AND C20
+
+find(22,z22)=1: y22 C22=rtk x22
+z22 < _22=kqc < y22
+                XOR x22
+      XOR C22=rtk < mtd < x21
+                          AND y21
+                    OR dvg < _21
+                             AND C21
+
+find(23,z23)=1: C23=gvs x23 y23
+z23 < C23=gvs < ssd < _22
+                      AND C22
+                OR hjf < x22
+                         AND y22
+      XOR _23=tmj < x23
+                    XOR y23
+
+find(24,z24)=1: C24=wfg x24 y24
+z24 < C24=wfg < psk < C23
+                      AND _23
+                OR frm < y23
+                         AND x23
+      XOR _24=qbp < x24
+                    XOR y24
+
+find(25,z25)=1: C25=pmm x25 y25
+z25 < C25=pmm < fws < _24
+                  AND C24
+            OR qcb < x24
+                     AND y24
+      XOR _25=msc < x25
+                XOR y25
+
+find(26,z26)=1: y26 C26=mbg x26
+z26 < _26=dfp < y26
+                XOR x26
+      XOR C26=mbg < qmv < x25
+                          AND y25
+                    OR ftq < C25
+                             AND _25
+
+find(27,z27)=1: y27 C27 x27
+z27 < _27=swt < y27
+                XOR x27
+      XOR C27=cmf < gsd < x26
+                          AND y26
+                    OR kbg < C26
+                             AND _26
+
+find(28,z28)=1: C28=ghk y28 x28
+z28 < C28=ghk < tbc < y27
+                      AND x27
+                OR nvm < _27
+                         AND C27
+      XOR _28=pgc < y28
+                    XOR x28
+
+find(29,z29)=1: y29 C29=vbp x29
+z29 < _29=fht < y29
+                XOR x29
+      XOR C29=vbp < crb < x28
+                          AND y28
+                    OR qhw < C28
+                             AND _28
+
+find(30,z30)=1: C30=nvq x30 y30
+z30 < C30=nvq < drg < y29
+                      AND x29
+                OR wbb < _29
+                         AND C29
+      XOR _30=gtd < x30
+                    XOR y30
+
+find(31,z31)=1: x31 C31=dtj y31
+z31 < _31=trd < x31
+                XOR y31
+      XOR C31=dtj < rkn < x30
+                          AND y30
+                    OR mck < C30
+                             AND _30
+
